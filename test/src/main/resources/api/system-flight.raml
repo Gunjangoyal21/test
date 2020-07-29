@@ -1,0 +1,12 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/461f3c3d-cb2d-4b8c-b36a-0f44e4b52747/ # 
+title: System-flight
+/flight:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: array
+            examples:
+              output: !include/example/response.json         

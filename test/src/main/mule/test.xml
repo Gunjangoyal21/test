@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="1e2bbaa7-d542-4d74-bee2-92f76dfccd6d" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="testFlow" doc:id="1b920e42-d827-4d49-8a5c-2e439e715184" >
+		<http:listener doc:name="Listener" doc:id="dbe71be5-0905-47bc-9777-cc121b53b047" config-ref="HTTP_Listener_config" path="/test"/>
+		<ee:transform doc:name="Transform Message" doc:id="d3a57926-fb37-4073-a018-7d45e14773a1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://schemas.xmlsoap.org/soap/envelope/
+ns ns01 http://soap.training.mulesoft.com/
+---
+{
+	ns0#Envelope: {
+		ns0#Header: null,
+		ns0#Body: {
+			ns01#findFlight: {
+				destination: 'SFO'
+			}
+		}
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="Request" doc:id="866fcd5f-2e98-473d-ac0f-2a11c9aa2ef3" url="http://mu.learn.mulesoft.com/delta"/>
+		<ee:transform doc:name="Transform Message" doc:id="f3d52493-05c0-4db3-a656-8d2d895f11d5" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="93f13c71-30fa-4b64-90fd-2e06211d6eeb" message="#[payload]"/>
+	</flow>
+	<flow name="testFlow1" doc:id="ae3c9293-6ccf-4be7-a732-def424756580" >
+		<http:listener doc:name="Listener" doc:id="0c646430-166c-4d13-96ac-26e6ff30fa4a" config-ref="HTTP_Listener_config" path="/query"/>
+		<set-payload value="#[message.attributes.queryParams.destination]" doc:name="Set Payload" doc:id="394d641f-7ef7-46ec-b0b6-6aa627ac8325" />
+		<ee:transform doc:name="Transform Message" doc:id="e41ca441-36e0-4d77-ad73-85823e00bf47" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://schemas.xmlsoap.org/soap/envelope/
+ns ns01 http://soap.training.mulesoft.com/
+---
+{
+	ns0#Envelope: {
+		ns0#Header: null,
+		ns0#Body: {
+			ns01#findFlight: {
+				destination: payload
+			}
+		}
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="Request" doc:id="6b81dc41-78c6-4a2a-a1b2-505e5e865dbf" url="http://mu.learn.mulesoft.com/delta"/>
+		<logger level="INFO" doc:name="Logger" doc:id="f37d1f40-7cd5-4680-9281-000e8c9d8220" message="#[payload]"/>
+	</flow>
+</mule>

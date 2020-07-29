@@ -1,0 +1,45 @@
+{
+  "Envelope": {
+    "Header": {
+      "header": {
+        "MULE_CORRELATION_ID": "952892d0-cb5e-11ea-b311-f8b46aac56d1",
+        "MULE_CORRELATION_GROUP_SIZE": "-1",
+        "MULE_CORRELATION_SEQUENCE": "-1"
+      }
+    },
+    "Body": {
+      "findFlightResponse": {
+        "return": {
+          "airlineName": "Delta",
+          "code": "A1B2C3",
+          "departureDate": "2015/03/20",
+          "destination": "SFO",
+          "emptySeats": "40",
+          "origin": "MUA",
+          "planeType": "Boing 737",
+          "price": "400.0"
+        },
+        "return": {
+          "airlineName": "Delta",
+          "code": "A1BTT4",
+          "departureDate": "2015/02/12",
+          "destination": "SFO",
+          "emptySeats": "30",
+          "origin": "MUA",
+          "planeType": "Boing 777",
+          "price": "593.0"
+        },
+        "return": {
+          "airlineName": "Delta",
+          "code": "A14244",
+          "departureDate": "2015/02/12",
+          "destination": "SFO",
+          "emptySeats": "10",
+          "origin": "MUA",
+          "planeType": "Boing 787",
+          "price": "294.0"
+        }
+      }
+    }
+  }
+}
